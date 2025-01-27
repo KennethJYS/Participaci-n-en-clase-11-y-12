@@ -122,6 +122,16 @@ def descomposicion_LU(A: np.ndarray) -> tuple[np.ndarray, np.ndarray]:
 
     for i in range(0, n):  # loop por columna
 
+        # --- Pivoteo parcial
+        p = np.argmax(np.abs(A[i:, i])) + i  # Encuentra la fila con el valor máximo en la columna
+        if i != p:
+            # Intercambiar filas
+            logging.debug(f"Intercambiando filas {i} y {p}")
+            A[[i, p], :] = A[[p, i], :]
+            L[[i, p], :i] = L[[p, i], :i]  # Intercambiar las filas correspondientes en L
+
+        if A[i, i] == 0:
+            raise ValueError("No existe solución única.")
         # --- deterimnar pivote
         if A[i, i] == 0:
             raise ValueError("No existe solución única.")
